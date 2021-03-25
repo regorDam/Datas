@@ -99,7 +99,7 @@ Denifnimos la función separarHorizontal:
 ```
 
 Ahora deberíamos poder obtener una imagen parecida a esta:
-![alt text]()
+![alt text](https://cdn.kintoncloud.com/assets/img/1_dRghjuiNnkla.png)
 
 ### Paso dos: agregar bordes
 Si queremos que las salas no ocupen todo el espacio tendremos que añadir bordes. Añadimos una nueva variable a nuestra clase para poder parametrizar el espacio que queremos dejar entre salas "recortarSala". En este caso usaremos siempre el mismo valor, pero podemos añadirle aleatoriedad.
@@ -122,12 +122,13 @@ Para ello crearemos una nueva función "recortar":
 }
 ```
 Si llamamos la función "recortar" antes de pintar obtendremos un resultado parecido a esto:
-![alt text]()
+![alt text](https://cdn.kintoncloud.com/assets/img/1_pHvFjaiYbdl.png)
 
 ### Paso tres: agregar conexiones
  - Write MORE Tests
 
-
+Al crear los corredores el resultado del mapa final debería ser algo así:
+![alt text](https://cdn.kintoncloud.com/assets/img/1_ResljGaybakg.png)
 License
 ----
 
