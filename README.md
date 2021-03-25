@@ -15,28 +15,28 @@ Después, solo debemos usar el árbol (BST) para crear las conexiones de las sal
 Para los ejemplos vamos a usar pseudocódigo que es aplicable a cualquier lenguaje y/o en cualquier motor de videojuegos, como por ejemplo [Unity3D], [Unreal Engine] o [Godot Engine]
 
 ```csharp
-1. Definimos una clase, por ejemplo "sala".
-2. Declaramos atributos numéricos protegidos para guardar "izquierda" , "derecha" , "arriba" , "abajo".
-3. Declaramos métodos para obtener los valores anteriores.
-3. Declaramos métodos para la obtener la "anchura" y "altura":
-4. Obtenemos la anchura:
+Definimos una clase, por ejemplo "sala".
+Declaramos atributos numéricos protegidos para guardar "izquierda" , "derecha" , "arriba" , "abajo".
+Declaramos métodos para obtener los valores anteriores.
+Declaramos métodos para la obtener la "anchura" y "altura":
+Obtenemos la anchura:
     return  derecha  -  izquierda  +  1 ;
-5. Definimos un constructor para inicializar "izquierda , derecha , arriba , abajo".
-6. Definimos método para pintar/renderizar:
+Definimos un constructor para inicializar "izquierda , derecha , arriba , abajo".
+Definimos método para pintar/renderizar:
 {
-    7. Declaramos un objeto que usaremos como contenedor/padre de la sala
+    Declaramos un objeto que usaremos como contenedor/padre de la sala
     
     for loopcounterX = izquierda to derecha
         for loopcounterY = abajo to arriba
-            8. Declaramos un objeto que usaremos de "tile"
+            Declaramos un objeto que usaremos de "tile"
             tile.position = vector(loopcounterX, loopcounterY)
             tile.parent = contenedor/padre
-            loopcounter = loopcounter + 1
+            loopcounterY = loopcounterY + 1
             
             tile.color = randomColor()
         endfor
         
-        loopcounter = loopcounter + 1
+        loopcounterX = loopcounterX + 1
     endfor    
     
     return contenedor/padre
@@ -49,8 +49,6 @@ El resultado en pantalla será algo así:
 
 En este punto realizamos alguno cambios en la clase anterior haciéndola abstracta y haciendo virtual la función de pintar para luego sobreescribirla.
 
-//Ahora, deberemos realizar algunos cambios en la clase anterior. Primero deberemos de cambiarla a abstracta, después cambiar la función de pintar a virtual para por último sobreescribirla (mejorar o ampliar explicación)//
-
 Dividiremos ahora ese espacio en dos con un corte horizontal, o vertical, al azar.
 
 Para poder hacerlo, crearemos una nueva clase hija de "sala" por ejemplo "binarySala".
@@ -59,18 +57,18 @@ Necesitamos definir los máximos y mínimos (minAltura, maxAltura, minAnchura, m
 
 
 ```csharp
-1. Definimos una nueva clase hija de la clase anterior.
-2. Declaramos atributos para minAltura, maxAltura, minAnchura, maxAnchura.
-3. Declaramos dos booleanos corteHorizontal y corteVertical que usaremos para saber si el nodo (sala) es un nodo hoja o no.
-4. Declaramos dos variables del tipo BinarySala (salaDerecha y salaIzquierda)
-5. Modificamos el constructor de la clase madre para inizializar el resto de variables a false y null
+Definimos una nueva clase hija de la clase anterior.
+Declaramos atributos para minAltura, maxAltura, minAnchura, maxAnchura.
+Declaramos dos booleanos corteHorizontal y corteVertical que usaremos para saber si el nodo (sala) es un nodo hoja o no.
+Declaramos dos variables del tipo BinarySala (salaDerecha y salaIzquierda)
+Modificamos el constructor de la clase madre para inizializar el resto de variables a false y null
 
-6. Creamos un nuevo método "esHoja" que retorne un booleano:
+Creamos un nuevo método "esHoja" que retorne un booleano:
 {
     return (salaDerecha is null && salaIzquierda is  null)
 }
 
-7. Creamos un método "separar":
+Creamos un método "separar":
 {
     if random() > 0.5 && obtenerAnchura() >= 2 * minAnchura:
         separarVertical()
@@ -78,7 +76,7 @@ Necesitamos definir los máximos y mínimos (minAltura, maxAltura, minAnchura, m
         separarHorizontal()
 }
 
-8. Sobreescribimos la función de la clase madre "pintar":
+Sobreescribimos la función de la clase madre "pintar":
 {
     if esHoja:
         return super.pintar() //Si es hoja, llamamos la función de la clase madre
@@ -93,7 +91,7 @@ El grafo siguiente podría ser un ejemplo de BST donde podemos ver los diferente
 
 Ahora viene la parte interesante, la función separarVertical y separarHorizontal.
 ```csharp
-1. Definimos la función separarHorizontal:
+Definimos la función separarHorizontal:
 {
     int corte = randomRange(minAltura - obtenerAltura() - minAltura)
     
@@ -110,19 +108,15 @@ Si queremos que las salas no ocupen todo el espacio tendremos que añadir bordes
 ```csharp
 Para ello crearemos una nueva función "recortar":
 {
-        izquierda += recortarSala
-        derecha -= recortarSala
-        arriba -= recortarSala
-        abajo += recortarSala
+    izquierda += recortarSala
+    derecha -= recortarSala
+    arriba -= recortarSala
+    abajo += recortarSala
 
-        if (salaIzquierda != null)
-        {
-            salaIzquierda.recortar();
-        }
-        if (salaDerecha != null)
-        {
-            salaDerecha.recortar();
-        }
+    if salaIzquierda != null:
+        salaIzquierda.recortar()
+    if salaDerecha != null:
+        salaDerecha.recortar()
 }
 ```
 Si llamamos la función "recortar" antes de pintar obtendremos un resultado parecido a esto:
@@ -134,6 +128,23 @@ Crearemos métodos para encontrar todas las posiciones donde podamos agregar pas
 También crearemos una nueva clase pasillo para poder definir algunos atributos y su método pintar.
 ```csharp
 TODO binarySala methods
+Declaramos un método que retorne una lista de números enteros "obtenerConexionesDerecha()":
+{
+  Definimos una lista de números enteros "conexiones"
+
+  if !esHoja():
+    if salaDerecha != null:
+      conexiones.AddRange(salaDerecha.obtenerConexionesDerecha())
+    if corteHorizontal && salaIzquierda != null:
+      conexiones.AddRange(salaIzquierda.obtenerConexionesDerecha())
+  else:
+    for loopcounter = abajo + corridorMargin to top - corridorMargin
+      conexiones.Add(loopcounter);
+      loopcounter = loopcounter + 1
+    endfor
+  
+  return connections;
+}
 ```
 
 ```csharp
