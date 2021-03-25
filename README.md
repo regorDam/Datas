@@ -125,10 +125,21 @@ Si llamamos la función "recortar" antes de pintar obtendremos un resultado pare
 ![alt text](https://cdn.kintoncloud.com/assets/img/1_pHvFjaiYbdl.png)
 
 ### Paso tres: agregar conexiones
- - Write MORE Tests
+Ahora solo nos falta añadir las conexiones que conectaran las salas. Para hacerlo vamos a conectar de forma recursiva cada nodo con su hermano.
+Crearemos métodos para encontrar todas las posiciones donde podamos agregar pasillos.
+También crearemos una nueva clase pasillo para poder definir algunos atributos y su método pintar.
+```csharp
+TODO binarySala methods
+```
 
-Al crear los corredores el resultado del mapa final debería ser algo así:
+```csharp
+TODO pasillo class
+```
+
+Al crear los pasillos el resultado del mapa final debería ser algo así:
+
 ![alt text](https://cdn.kintoncloud.com/assets/img/1_ResljGaybakg.png)
+
 License
 ----
 
