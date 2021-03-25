@@ -2,33 +2,33 @@
 
 Antes de empezar, vamos a definir un poco este concepto. BSP es una función que sirve para dividir recursivamente un espacio. Podemos usar este algoritmo para varias finalidades, pero en este caso vamos a usarlo para generar mazmorras de forma aleatoria y procedural. Para más detalle podemos visitar la [wikipedia].
 
-El reto de usar aleatoriedad en la creación de escenarios es que mantengan consistentes a pesar de ser aleatorios. De esta manera BSP nos permite tener ese punto de aleatoriedad y solidez. La lógica del algoritmo no es complicada a priori, se base en subdividir de forma recursiva un espacio en dos.
+El reto de usar la aleatoriedad en la creación de escenarios es que los escenarios se mantengan consistentes a pesar de ser aleatorios. BSP nos permite mantener ambas características, aleatoriedad y solidez. La lógica del algoritmo no es complicada a priori, se basa en subdividir de forma recursiva un espacio en dos sub espacios.
 
 ![alt text](https://cdn.kintoncloud.com/assets/img/1_HKJEoxPoma.png)
 
-Luego solo tendriamos que usar el arbol (BST) para crear las conexiones de las salas.
+Después, solo debemos usar el árbol (BST) para crear las conexiones de las salas.
 
 ![alt text](https://cdn.kintoncloud.com/assets/img/1_SWoGcYUaQS.png)
 
 ### Paso uno: Division
 
-Para los ejemplos voy a usar pseudocódigo que es aplicable a cualquier lenguaje y/o para cualquier motor de videojuegos como pueden ser por ejemplo [Unity3D], [Unreal Engine] o [Godot Engine]
+Para los ejemplos vamos a usar pseudocódigo que es aplicable a cualquier lenguaje y/o en cualquier motor de videojuegos, como por ejemplo [Unity3D], [Unreal Engine] o [Godot Engine]
 
 ```csharp
-Definimos una clase por ejemplo "sala".
-Declaramos atributos numericos protegidos para guardar "izquierda , derecha , arriba , abajo".
-Declaramos metodos para obtener los valores anteriores.
-Declaramos metodos para la obtener la "anchura y altura":
-Obtener anchura
+1. Definimos una clase, por ejemplo "sala".
+2. Declaramos atributos numéricos protegidos para guardar "izquierda" , "derecha" , "arriba" , "abajo".
+3. Declaramos métodos para obtener los valores anteriores.
+3. Declaramos métodos para la obtener la "anchura" y "altura":
+4. Obtenemos la anchura:
     return  derecha  -  izquierda  +  1 ;
-Definimos un costructor para inizializar "izquierda , derecha , arriba , abajo".
-Definimos metodo para pintar/renderizar:
+5. Definimos un constructor para inicializar "izquierda , derecha , arriba , abajo".
+6. Definimos método para pintar/renderizar:
 {
-    Declaramos un objeto que usaremos de contenedor/padre de de la sala
+    7. Declaramos un objeto que usaremos como contenedor/padre de la sala
     
     for loopcounterX = izquierda to derecha
         for loopcounterY = abajo to arriba
-            Declaramos un objeto que usaremos de "tile"
+            8. Declaramos un objeto que usaremos de "tile"
             tile.position = vector(loopcounterX, loopcounterY)
             tile.parent = contenedor/padre
             loopcounter = loopcounter + 1
@@ -49,24 +49,28 @@ El resultado en pantalla será algo así:
 
 En este punto realizamos alguno cambios en la clase anterior haciéndola abstracta y haciendo virtual la función de pintar para luego sobreescribirla.
 
-Ahora vamos a dividir ese espacio en dos con un corte horizontal o vertical al azar.
-Para hacer eso crearemos una nueva clase hija de "sala" por ejemplo "binarySala".
-Necesitamos definir los máximos y mínimos (minAltura, maxAltura, minAnchura, maxAnchura) de las salas, podemos tenerlos donde mejor nos convenga por ejemplo un script de config's.
+//Ahora, deberemos realizar algunos cambios en la clase anterior. Primero deberemos de cambiarla a abstracta, después cambiar la función de pintar a virtual para por último sobreescribirla (mejorar o ampliar explicación)//
+
+Dividiremos ahora ese espacio en dos con un corte horizontal, o vertical, al azar.
+
+Para poder hacerlo, crearemos una nueva clase hija de "sala" por ejemplo "binarySala".
+
+Necesitamos definir los máximos y mínimos (minAltura, maxAltura, minAnchura, maxAnchura) de las salas, podemos tenerlos donde mejor nos convenga por ejemplo un script de config's. 
 
 
 ```csharp
-Definimos una nueva clase hija de la clase anterior.
-Declaramos atributos para minAltura, maxAltura, minAnchura, maxAnchura.
-Declaramos dos booleanos corteHorizontal y corteVertical que usaremos para saber si el nodo (sala) es un nodo hoja o no.
-Declaramos dos variables del tipo BinarySala (salaDerecha y salaIzquierda)
-Modificamos el constructor de la clase madre para inizializar el resto de variables a false y null
+1. Definimos una nueva clase hija de la clase anterior.
+2. Declaramos atributos para minAltura, maxAltura, minAnchura, maxAnchura.
+3. Declaramos dos booleanos corteHorizontal y corteVertical que usaremos para saber si el nodo (sala) es un nodo hoja o no.
+4. Declaramos dos variables del tipo BinarySala (salaDerecha y salaIzquierda)
+5. Modificamos el constructor de la clase madre para inizializar el resto de variables a false y null
 
-Creamos un nuevo método "esHoja" que retorne un booleano:
+6. Creamos un nuevo método "esHoja" que retorne un booleano:
 {
     return (salaDerecha is null && salaIzquierda is  null)
 }
 
-Creamos un método "separar":
+7. Creamos un método "separar":
 {
     if random() > 0.5 && obtenerAnchura() >= 2 * minAnchura:
         separarVertical()
@@ -74,10 +78,10 @@ Creamos un método "separar":
         separarHorizontal()
 }
 
-Sobreescribimos la función de la clase madre "pintar":
+8. Sobreescribimos la función de la clase madre "pintar":
 {
     if esHoja:
-        return super.pintar() //Si es hoja llamamos la función de la clase madre
+        return super.pintar() //Si es hoja, llamamos la función de la clase madre
     else:
         salaIzquierda.pintar()
         salaDerecha.pintar()
@@ -89,7 +93,7 @@ El grafo siguiente podría ser un ejemplo de BST donde podemos ver los diferente
 
 Ahora viene la parte interesante, la función separarVertical y separarHorizontal.
 ```csharp
-Denifnimos la función separarHorizontal:
+1. Definimos la función separarHorizontal:
 {
     int corte = randomRange(minAltura - obtenerAltura() - minAltura)
     
@@ -98,11 +102,11 @@ Denifnimos la función separarHorizontal:
 }
 ```
 
-Ahora deberíamos poder obtener una imagen parecida a esta:
+Deberíamos obtener una imagen parecida a la siguiente:
 ![alt text](https://cdn.kintoncloud.com/assets/img/1_dRghjuiNnkla.png)
 
 ### Paso dos: agregar bordes
-Si queremos que las salas no ocupen todo el espacio tendremos que añadir bordes. Añadimos una nueva variable a nuestra clase para poder parametrizar el espacio que queremos dejar entre salas "recortarSala". En este caso usaremos siempre el mismo valor, pero podemos añadirle aleatoriedad.
+Si queremos que las salas no ocupen todo el espacio tendremos que añadir bordes. Añadimos una nueva variable a nuestra clase para poder parametrizar el espacio que queremos dejar entre salas "recortarSala". En este caso usaremos siempre el mismo valor, así que no podremos añadirle aleatoriedad.
 ```csharp
 Para ello crearemos una nueva función "recortar":
 {
@@ -125,7 +129,7 @@ Si llamamos la función "recortar" antes de pintar obtendremos un resultado pare
 ![alt text](https://cdn.kintoncloud.com/assets/img/1_pHvFjaiYbdl.png)
 
 ### Paso tres: agregar conexiones
-Ahora solo nos falta añadir las conexiones que conectaran las salas. Para hacerlo vamos a conectar de forma recursiva cada nodo con su hermano.
+Ahora solo nos falta añadir las conexiones que conectarán las salas. Para hacerlo vamos a conectar de forma recursiva cada nodo con su hermano.
 Crearemos métodos para encontrar todas las posiciones donde podamos agregar pasillos.
 También crearemos una nueva clase pasillo para poder definir algunos atributos y su método pintar.
 ```csharp
